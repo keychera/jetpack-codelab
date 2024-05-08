@@ -1,5 +1,6 @@
 package self.chera.jetpackcodelab
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -27,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import self.chera.jetpackcodelab.ui.theme.JetpackCodelabTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,8 +59,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         ), label = "Expanding animation"
     )
 
-    Surface(
-        color = MaterialTheme.colorScheme.primary,
+    Card(
         modifier = modifier.padding(vertical = 4.dp, horizontal = 8.dp)
     ) {
         Row(
@@ -69,7 +71,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                     .padding(bottom = extraPadding.coerceAtLeast(0.dp))
             ) {
                 Text(text = "Hello ")
-                Text(text = name)
+                Text(text = name, style = MaterialTheme.typography.labelLarge)
             }
             ElevatedButton(
                 onClick = { expanded = !expanded }
@@ -93,7 +95,12 @@ fun Greetings(
     }
 }
 
-@Preview(showBackground = true, widthDp = 320)
+@Preview(
+    showBackground = true,
+    widthDp = 320,
+    uiMode = UI_MODE_NIGHT_YES,
+    name = "GreetingPreviewDark"
+)
 @Composable
 fun GreetingPreview() {
     JetpackCodelabTheme {
