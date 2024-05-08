@@ -71,7 +71,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun MyApp(
+fun Greetings(
     modifier: Modifier = Modifier,
     names: List<String> = listOf("World", "Compose")
 ) {
@@ -86,6 +86,6 @@ fun MyApp(
 @Composable
 fun GreetingPreview() {
     JetpackCodelabTheme {
-        MyApp()
+        Greetings()
     }
 }
