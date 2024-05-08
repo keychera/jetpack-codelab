@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package self.chera.jetpackcodelab
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -14,8 +16,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -28,6 +36,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import self.chera.jetpackcodelab.ui.theme.JetpackCodelabTheme
 
 
@@ -38,10 +49,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             JetpackCodelabTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                    MyApp(
+                        modifier = Modifier.padding(innerPadding),
                     )
+
                 }
             }
         }
@@ -95,6 +106,86 @@ fun Greetings(
     }
 }
 
+@Composable
+fun BasicCompose(
+    modifier: Modifier = Modifier,
+    onClickBack: () -> Unit = {}
+) {
+    var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
+
+    Surface(modifier) {
+        Column {
+            IconButton(onClick = onClickBack) {
+                Icon(Icons.Default.ArrowBack, "back")
+            }
+            if (shouldShowOnboarding) {
+                OnboardingScreen(onContinueClicked = {
+                    shouldShowOnboarding = false
+                })
+            } else {
+                Greetings()
+            }
+        }
+
+    }
+}
+
+@Composable
+fun ProjectCard(
+    modifier: Modifier = Modifier,
+    name: String = "a project",
+    onClick: () -> Unit = {}
+) {
+    Card(
+        onClick = onClick,
+        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp)
+        ) {
+            Text(
+                text = name,
+                modifier = Modifier.weight(1.0F)
+            )
+            Icon(Icons.Default.ArrowForward, "open")
+        }
+    }
+}
+
+@Composable
+fun BrowseProjects(
+    modifier: Modifier = Modifier,
+    projects: List<Pair<String, () -> Unit>> = listOf()
+) {
+    LazyColumn(modifier = modifier.padding(vertical = 4.dp)) {
+        items(items = projects) { (name, onClick) ->
+            ProjectCard(name = name, onClick = onClick)
+        }
+    }
+}
+
+
+@Composable
+fun MyApp(modifier: Modifier = Modifier) {
+    val navController = rememberNavController()
+    NavHost(navController, startDestination = "home") {
+        composable("home") {
+            BrowseProjects(
+                modifier = modifier,
+                projects = listOf(
+                    Pair("basic-compose") { navController.navigate("basic-compose") },
+                )
+            )
+        }
+        composable("basic-compose") {
+            BasicCompose(
+                modifier = modifier,
+                onClickBack = { navController.navigate("home") }
+            )
+        }
+    }
+}
+
 @Preview(
     showBackground = true,
     widthDp = 320,
@@ -104,6 +195,11 @@ fun Greetings(
 @Composable
 fun GreetingPreview() {
     JetpackCodelabTheme {
-        Greetings()
+        BrowseProjects(
+            projects = listOf(
+                Pair("basic-compose") { },
+                Pair("basic-compose") { },
+            )
+        )
     }
 }
