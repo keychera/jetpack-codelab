@@ -26,7 +26,6 @@ fun WellnessScreen(modifier: Modifier = Modifier) {
             var showTask by remember { mutableStateOf(true) }
             if (showTask) {
                 WellnessTaskItem(
-                    onClose = { showTask = false },
                     taskName = "Have you taken your 15 minute walk today?"
                 )
             }
@@ -34,6 +33,7 @@ fun WellnessScreen(modifier: Modifier = Modifier) {
         }
 
         WaterCounter(count, { count++ }, { count = 0 } ,modifier)
+        WellnessTasksList()
     }
 }
 
