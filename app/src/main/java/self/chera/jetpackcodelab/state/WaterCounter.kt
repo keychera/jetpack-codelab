@@ -21,9 +21,6 @@ import self.chera.jetpackcodelab.ui.theme.JetpackCodelabTheme
 fun WellnessScreen(modifier: Modifier = Modifier) {
     var count by rememberSaveable { mutableIntStateOf(0) }
     Column {
-        if (count > 0) {
-            Text(text = "You've had $count glasses.")
-        }
 
         WaterCounter(count, { count++ }, { count = 0 } ,modifier)
         val wellnessViewModel: WellnessViewModel = viewModel()
@@ -44,6 +41,7 @@ fun WaterCounter(
 ) {
 
     Column(modifier = modifier.padding(16.dp)) {
+        if (count > 0) Text(text = "You've had $count glasses.")
         Row(Modifier.padding(top = 8.dp)) {
             Button(onClick = onIncrement) {
                 Text("Add one")
