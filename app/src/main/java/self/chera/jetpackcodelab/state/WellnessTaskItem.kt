@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import self.chera.jetpackcodelab.ui.theme.JetpackCodelabTheme
 
 data class WellnessTask(val id: Int, val label: String)
@@ -38,8 +39,6 @@ fun WellnessTasksList(
         }
     }
 }
-
-fun getWellnessTasks() = List(30) { i -> WellnessTask(i, "Task # $i") }
 
 @Composable
 fun WellnessTaskItem(taskName: String,  onClose: () -> Unit, modifier: Modifier = Modifier) {
@@ -85,6 +84,7 @@ fun WellnessTaskItem(
 @Composable
 fun WellnessTaskPreview() {
     JetpackCodelabTheme {
-        WellnessTasksList(list = getWellnessTasks(), onCloseTask = {})
+        val wellnessViewModel: WellnessViewModel = viewModel()
+        WellnessTasksList(list = wellnessViewModel.tasks, onCloseTask = {})
     }
 }
