@@ -101,7 +101,7 @@ fun MyApp(modifier: Modifier = Modifier) {
                 onClickBack = { navController.navigate("home") }
             )
         }
-        composable("basic-compose") {
+        composable("state") {
             BasicCompose(
                 modifier = modifier,
                 onClickBack = { navController.navigate("home") }
