@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,14 +20,8 @@ import self.chera.jetpackcodelab.ui.theme.JetpackCodelabTheme
 
 @Composable
 fun WellnessScreen(modifier: Modifier = Modifier) {
-    WaterCounter(modifier)
-}
-
-@Composable
-fun WaterCounter(modifier: Modifier = Modifier) {
-    var count by remember { mutableIntStateOf(0) }
-
-    Column(modifier = modifier.padding(16.dp)) {
+    var count by rememberSaveable { mutableIntStateOf(0) }
+    Column {
         if (count > 0) {
             var showTask by remember { mutableStateOf(true) }
             if (showTask) {
@@ -37,11 +32,25 @@ fun WaterCounter(modifier: Modifier = Modifier) {
             }
             Text(text = "You've had $count glasses.")
         }
+
+        WaterCounter(count, { count++ }, { count = 0 } ,modifier)
+    }
+}
+
+@Composable
+fun WaterCounter(
+    count: Int,
+    onIncrement: () -> Unit,
+    onClear: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+
+    Column(modifier = modifier.padding(16.dp)) {
         Row(Modifier.padding(top = 8.dp)) {
-            Button(onClick = { count++ }) {
+            Button(onClick = onIncrement) {
                 Text("Add one")
             }
-            Button(onClick = { count = 0 }, Modifier.padding(start = 8.dp)) {
+            Button(onClick = onClear, Modifier.padding(start = 8.dp)) {
                 Text("Clear water count")
             }
         }
